@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,7 @@ public class ProductRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	 }
 	 @PostMapping(path ="/image/{id}",produces = MediaType.IMAGE_PNG_VALUE)
-	 //@PostAuthorize("hasAuthority('SELLER');hasAuthority('ADMIN')")
+	 @PostAuthorize("hasAuthority('SELLER')")
 	 public ResponseEntity<byte[]> uploadImage(MultipartFile file, @PathVariable(name = "id") long id) throws Exception{
 		 byte[] image = iProductService.uploadPhoto(file, id);
 		 if(image!=null) {
@@ -79,7 +80,7 @@ public class ProductRestController {
 		  return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	 }
 	 @PostMapping
-	 //@PostAuthorize("hasAuthority('SELLER')")
+	 @PostAuthorize("hasAuthority('SELLER')")
 	 public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
 		 Product produit = iProductService.addProduct(product);
 		 if(produit!=null) {
@@ -88,7 +89,7 @@ public class ProductRestController {
 		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	 }
 	 @PostMapping(path ="/brand")
-	 //@PostAuthorize("hasAuthority('SELLER')")
+	 @PostAuthorize("hasAuthority('SELLER')")
 	 public ResponseEntity<Brand> saveBrand(@RequestBody Brand brand) {
 		 Brand bran = iProductService.addBrand(brand);
 		 if(bran!=null) {
@@ -97,7 +98,7 @@ public class ProductRestController {
 		 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	 }
 	 @PostMapping(path ="/category")
-	 //@PostAuthorize("hasAuthority('SELLER')")
+	 @PostAuthorize("hasAuthority('SELLER')")
 	 public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
 		 Category cat = iProductService.addCategory(category);
 		 if(cat!=null) {

@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +20,7 @@ public class Category  {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategory;
 	private String categoryName;
-	@OneToMany(mappedBy = "category",cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "category")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Collection<Product> products;
 }

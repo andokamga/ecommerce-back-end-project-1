@@ -121,24 +121,36 @@ public class ShopInitServiceImpl implements IShopInitService {
 
 	@Override
 	public void initUser() {
-		List<UserRole> roles = userRoleRepository.findAll();
 		Stream.of("kamga","sado","andre","delon","nguigne","mervelle").forEach(userName->{
 			UserApp user = new UserApp();
 			user.setUserName(userName);
 			user.setActive(true);
 			user.setPassword(PasswordEncoder.encode("123"));
 			user.setUserImage("UnKnown.jpg");
-			for(int i=0; i<(1+(int)(Math.random()*2)); i++) {
-				UserRole role = roles.get(new Random().nextInt(roles.size()));
+			if(userName.compareTo("kamga")==0) {
+				for(int y=0; y<3; y++) {
+					UserRole role = userRoleRepository.findById((long) (y+1)).get();
+					user.getUserRoles().add(role);
+					role.getUserApps().add(user);
+				}
+				userAppRepository.save(user);	
+			}else if(userName.compareTo("sado")==0) {
+				for(int y=0; y<2; y++) {
+					UserRole role = userRoleRepository.findById((long) (y+2)).get();
+					user.getUserRoles().add(role);
+					role.getUserApps().add(user);
+				}
+				userAppRepository.save(user);
+			}else {
+				UserRole role = userRoleRepository.findById((long) (3)).get();
 				user.getUserRoles().add(role);
 				role.getUserApps().add(user);
-			};
+				userAppRepository.save(user);
+			}
 			
-			userAppRepository.save(user);
 		});		
 		
 	}
-
 	@Override
 	public void initProduct() {
 		double[] price = new double[] {1000,2500,7550,800,400};

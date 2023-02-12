@@ -38,10 +38,10 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		//http.formLogin();
 		http.headers().frameOptions().disable();
-		http.authorizeHttpRequests().anyRequest().permitAll();
+		//http.authorizeHttpRequests().anyRequest().permitAll();
 		//http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/saveUser/**","/saveRole/**").hasAuthority("ADMIN");
-		//http.authorizeHttpRequests().requestMatchers("/api/**"/*,"/refreshToken/**","/accounts/user/**"*/).permitAll();
-		//http.authorizeHttpRequests().anyRequest().authenticated();
+		http.authorizeHttpRequests().requestMatchers("/api/**","/login/**"/*,"/refreshToken/**","/accounts/user/**"*/).permitAll();
+		http.authorizeHttpRequests().anyRequest().authenticated();
         //http.formLogin().permitAll().loginPage("/loginPage.html");
         //http.logout().permitAll();
 		http.addFilter(new JwtAuthentificationFilter(Authentication()));

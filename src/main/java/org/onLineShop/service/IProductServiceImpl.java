@@ -138,6 +138,11 @@ public class IProductServiceImpl implements IProductService {
 	@Override
 	public boolean delateBrand(Long id) {
 		if(brandRepository.findById(id).isPresent()) {
+			for(Product product:productRepository.findAll()) {
+				if(product.getBrand().getIdBrand()==id) {
+					product.setBrand(null);
+				}
+			}
 			brandRepository.delete(brandRepository.findById(id).get());
 			return true;
 		}
@@ -146,6 +151,11 @@ public class IProductServiceImpl implements IProductService {
 	@Override
 	public boolean delateCategory(Long id) {
 		if(categoryRepository.findById(id).isPresent()) {
+			for(Product product:productRepository.findAll()) {
+				if(product.getCategory().getIdCategory()==id) {
+					product.setCategory(null);
+				}
+			}
 			categoryRepository.delete(categoryRepository.findById(id).get());
 			return true;
 	    }
