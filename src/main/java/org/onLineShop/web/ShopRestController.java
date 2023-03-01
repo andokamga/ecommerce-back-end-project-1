@@ -33,16 +33,14 @@ public class ShopRestController {
 		 if(t!=null) {
 			 return ResponseEntity.status(HttpStatus.CREATED).body(t);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping
 	//@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Shop> saveShop(@RequestBody Shop shop ) {
 		Shop s = iShopService.addShop(shop);	
-		if(s!=null) {
-			 return ResponseEntity.status(HttpStatus.CREATED).body(s);
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(s);
+		
 	}
 	
 	@DeleteMapping (path ="/town/{id}")
@@ -51,7 +49,7 @@ public class ShopRestController {
 		if(iShopService.delateTown(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="/{id}")
 	//@PostAuthorize("hasAuthority('ADMIN')")
@@ -59,25 +57,20 @@ public class ShopRestController {
 		if(iShopService.delateShop(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PutMapping
 	//@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Shop> shopUpdate(@RequestBody Shop shop) {
 		Shop s = iShopService.updateShop(shop);
-		if(s!=null) {
-			 return ResponseEntity.status(HttpStatus.OK).body(s);
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.OK).body(s);
+	
 	}
 	@PutMapping (path ="/town")
 	//@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Town> townUpdate(@RequestBody Town town) {
 		Town t = iShopService.updateTown(town);
-		if(t!=null) {
-			 return ResponseEntity.status(HttpStatus.OK).body(t);
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.OK).body(t);
 	}
 	@GetMapping("/{id}")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -86,7 +79,7 @@ public class ShopRestController {
 		 if(shop!=null) {
 			 return ResponseEntity.status(HttpStatus.OK).body(shop);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/town/{id}")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -95,7 +88,7 @@ public class ShopRestController {
 		 if(town!=null) {
 			 return ResponseEntity.status(HttpStatus.OK).body(town);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/towns")
 	public ResponseEntity<List<Town>> getAllTown(){
@@ -111,15 +104,13 @@ public class ShopRestController {
 		 if(iShopService.addSellerToShop(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PostMapping("/renove")
 	//@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> renoveSellerToShop(@RequestBody UrlData urlData) {
-		 if(iShopService.renoveSellerToShop(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	
 	}
 	@GetMapping("/sellers/{id}")
 	//@PostAuthorize("hasAuthority('USER')")

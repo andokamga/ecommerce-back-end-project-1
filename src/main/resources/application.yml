@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: onLine-Shop
+
+  security:
+    oauth2:
+      client:
+       registration:
+          facebook:
+            clientId: 1128537777843457
+            clientSecret: ad4e14ef4b295cefe6cb3322834dd884
+            scope:
+              - email
+              - public_profile
+            

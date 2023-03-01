@@ -36,4 +36,6 @@ public interface IProductService {
 	public List<Category> allShopCategory(long id);
 	public boolean stockProduct(UrlData urlData);
 	public boolean destockProduct(UrlData urlData);
+	public Brand findBrandByBrandName(String brandName);
+	public Category findCategoryByCategoryName(String categoryName);
  }

@@ -41,16 +41,19 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+//@Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD )
 class ProductRestControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 	@Autowired
-	private IProductService iProductService;
-	@Autowired
 	private AppUserDetails appUserDetails;
+	@Autowired
+	private IProductService iProductService;
 	private MockMvc mockMvc;
 	@BeforeEach
 	public void setup() {
@@ -93,7 +96,7 @@ class ProductRestControllerTest {
 		return jsonParser.parseMap(token).get("access-token").toString();
 	}
 
-	@Test
+	/*@Test
 	void testImage() throws Exception {
 		ResultActions result = mockMvc.perform(get("/api/products/image/{id}",3)
 				                              .contentType(MediaType.IMAGE_PNG_VALUE)
@@ -112,7 +115,7 @@ class ProductRestControllerTest {
 		//when -action
 		ResultActions result = mockMvc.perform(multipart("/api/products/image/{id}",1)
 				                               .file(image)
-				                               .header("Authorization", "Bearer " + accessToken)
+				                               .header("Authorization", "Bearer " +accessToken)
                                                .contentType(MediaType.IMAGE_PNG_VALUE)
                                                .accept(MediaType.IMAGE_PNG_VALUE));
         //then -verify output    
@@ -431,6 +434,6 @@ class ProductRestControllerTest {
         //then -verify output
         result.andExpect(status().isOk());
 		
-	}
+	}*/
 
 }

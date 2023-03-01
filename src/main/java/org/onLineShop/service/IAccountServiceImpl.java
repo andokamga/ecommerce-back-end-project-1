@@ -16,7 +16,7 @@ import org.onLineShop.service.from.UtilDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +28,6 @@ public class IAccountServiceImpl implements IAccountService{
 	public UserRoleRepository userRoleRepository;
 	@Autowired
 	public UserAppRepository userAppRepository;
-	@Autowired
-	public PasswordEncoder PasswordEncoder;
 	@Override
 	public String uploadDirectory() {
 		return System.getProperty("user.home")+"/shop/profils";
@@ -41,7 +39,7 @@ public class IAccountServiceImpl implements IAccountService{
 			UserRole role  =  userRoleRepository.findByUserRoleNameContains(roleName);
 			String password = user.getPassword();
 			user.setUserImage("Unknown.jpg");
-			user.setPassword(PasswordEncoder.encode(password));
+			user.setPassword(new BCryptPasswordEncoder().encode(password));
 			user.getUserRoles().add(role);
 			return userAppRepository.save(user);
 		}
@@ -50,7 +48,10 @@ public class IAccountServiceImpl implements IAccountService{
 
 	@Override
 	public UserRole addRole(UserRole role) {
-		return userRoleRepository.save(role);
+		if(findRoleByRoleName(role.getUserRoleName())==null&&role.getUserRoleName()!=null) {
+			return userRoleRepository.save(role);
+		}
+		return null;
 		
 	}
 
@@ -209,6 +210,20 @@ public class IAccountServiceImpl implements IAccountService{
 	@Override
 	public UserApp verifyUsername(UrlData urlData) {
 		return userAppRepository.findByUserName(urlData.getUsername());
+	}
+	@Override
+	public UserRole findRoleByRoleName(String roleName) {
+		return userRoleRepository.findByUserRoleName(roleName);
+	}
+	
+	@Override
+	public UserApp findUserByEmailAdress(String email) {
+		return userAppRepository.findByEmail(email);
+		
+	}
+	@Override
+	public void saveAndUpdateOauthUser(UserApp user) {
+		userAppRepository.save(user);	
 	}
 
 }

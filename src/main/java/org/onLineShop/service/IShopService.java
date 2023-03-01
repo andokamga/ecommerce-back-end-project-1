@@ -20,4 +20,5 @@ public interface IShopService {
 	public boolean addSellerToShop(UrlData urlData);
 	public List<UserApp> allSellerOfShop(long idShop);
 	public boolean renoveSellerToShop(UrlData urlData);
+	public Town findTownByTownName(String TownName);
 }

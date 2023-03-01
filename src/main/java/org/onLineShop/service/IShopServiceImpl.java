@@ -35,6 +35,9 @@ public class IShopServiceImpl implements IShopService {
 	public IProductService iProductService;
 	@Override
 	public Town addTown(Town town) {
+		if(findTownByTownName(town.getTownName())!=null) {
+			return null;
+		}
 		return townRepository.save(town);
 		
 	}
@@ -93,7 +96,9 @@ public class IShopServiceImpl implements IShopService {
 
 	@Override
 	public Town updateTown(Town town) {
-	
+		if(findTownByTownName(town.getTownName())!=null) {
+			return null;
+		}
 		return townRepository.save(town);
 	}
 
@@ -147,6 +152,11 @@ public class IShopServiceImpl implements IShopService {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Town findTownByTownName(String TownName) {
+			return townRepository.findByTownName(TownName);
 	}
 
 }

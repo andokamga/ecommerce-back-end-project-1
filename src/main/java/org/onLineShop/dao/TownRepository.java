@@ -6,4 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface TownRepository extends JpaRepository<Town, Long>{
 
+	Town findByTownName(String townName);
+
 }

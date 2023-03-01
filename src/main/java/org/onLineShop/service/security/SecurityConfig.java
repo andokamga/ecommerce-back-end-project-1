@@ -1,5 +1,8 @@
 package org.onLineShop.service.security;
 
+import org.onLineShop.service.security.oauth2.CustomOAuth2UserService;
+import org.onLineShop.service.security.oauth2.Oauth2LonginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+	@Autowired
+	private CustomOAuth2UserService oauth2UserService;
+	@Autowired
+	private Oauth2LonginSuccessHandler oauth2LonginSuccessHandler;
 	
 	@Bean
 	public UserDetailsService UserDetailsService() {
@@ -38,12 +46,18 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		//http.formLogin();
 		http.headers().frameOptions().disable();
-		//http.authorizeHttpRequests().anyRequest().permitAll();
+		http.authorizeHttpRequests().anyRequest().permitAll();
 		//http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/saveUser/**","/saveRole/**").hasAuthority("ADMIN");
-		http.authorizeHttpRequests().requestMatchers("/api/**","/login/**"/*,"/refreshToken/**","/accounts/user/**"*/).permitAll();
-		http.authorizeHttpRequests().anyRequest().authenticated();
+		//http.authorizeHttpRequests().requestMatchers("/facebook/**","/login/**","/oauth2/**","/h2-console/**"/*,"/refreshToken/**","/accounts/user/**"*/).permitAll();
+		//http.authorizeHttpRequests().anyRequest().authenticated();
         //http.formLogin().permitAll().loginPage("/loginPage.html");
         //http.logout().permitAll();
+		http.oauth2Login()
+		     //.loginPage("/login")
+		     .userInfoEndpoint()
+		     .userService(oauth2UserService)
+		     .and()
+		     .successHandler(oauth2LonginSuccessHandler);
 		http.addFilter(new JwtAuthentificationFilter(Authentication()));
 		http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();	

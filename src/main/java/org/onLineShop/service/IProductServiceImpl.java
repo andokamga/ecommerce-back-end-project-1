@@ -107,21 +107,33 @@ public class IProductServiceImpl implements IProductService {
 	}		
 	@Override
 	public Brand addBrand(Brand brand) {
+		if(findBrandByBrandName(brand.getBrandName())!=null) {
+			return null;
+		}
 		return brandRepository.save(brand);
 		
 	}
 	@Override
 	public Brand updateBrand(Brand brand) {
+		if(findBrandByBrandName(brand.getBrandName())!=null) {
+			return null;
+		}
 		return brandRepository.save(brand);
 		
 	}
 	@Override
 	public Category addCategory(Category category) {
+		if(findCategoryByCategoryName(category.getCategoryName())!=null) {
+			return null;
+		}
 		return categoryRepository.save(category);
 		
 	}
 	@Override
 	public Category updateCategory(Category category) {
+		if(findCategoryByCategoryName(category.getCategoryName())!=null) {
+			return null;
+		}
 		return categoryRepository.save(category);
 		
 	}
@@ -297,6 +309,14 @@ public class IProductServiceImpl implements IProductService {
 			
 		}
 		return false;
+	}
+	@Override
+	public Brand findBrandByBrandName(String brandName) {
+		return brandRepository.findByBrandName(brandName);
+	}
+	@Override
+	public Category findCategoryByCategoryName(String categoryName) {
+		return categoryRepository.findByCategoryName(categoryName);
 	}
 
 }

@@ -30,10 +30,7 @@ public class OrderRestController {
 	//@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<Orde> saveOrder(@RequestBody OrderForme orderForme ) {
 		Orde orde = iOrderService.addOrder(orderForme);
-		 if(orde!=null) {
-			return ResponseEntity.status(HttpStatus.OK).body(orde);
-		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(orde);
 	}
 	@GetMapping(path ="/client")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -53,7 +50,7 @@ public class OrderRestController {
 		if(orde!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(orde);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping(path ="/shop")
 	//@PostAuthorize("hasAuthority('SELLER')")
@@ -62,7 +59,7 @@ public class OrderRestController {
 		if(ordes!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(ordes);
 		 }
-		 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		 
 	}
 	@DeleteMapping(path ="/{id}")
@@ -71,7 +68,7 @@ public class OrderRestController {
 		if(iOrderService.deleteOrder(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 
 }

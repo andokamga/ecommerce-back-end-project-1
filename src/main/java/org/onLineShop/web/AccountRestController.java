@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin("*")
@@ -39,38 +40,39 @@ public class AccountRestController {
 	public IAccountService iAccountService;
 	@Autowired
 	public RefreshToken RefreshToken;
+	@PostMapping(path ="/signup")
 	//@PostMapping(path ="/user")
-	public ResponseEntity<UserApp> saveUser(@RequestBody UserApp user) {
+	public ResponseEntity<UserApp> saveUser(@RequestBody @Valid UserApp user) {
 		UserApp userApp = iAccountService.addUser(user);
 		if(userApp!=null) {
 			 return ResponseEntity.status(HttpStatus.CREATED).body(userApp);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping(path ="/role")
 	//@PostAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<UserRole> saveRole(@RequestBody UserRole role) {
+	public ResponseEntity<UserRole> saveRole(@RequestBody @Valid UserRole role) {
 		UserRole userRole = iAccountService.addRole(role);
 		if(userRole!=null) {
 			 return ResponseEntity.status(HttpStatus.CREATED).body(userRole);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping(path ="/add")
 	//@PostAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<Void> saveRoleToUser(@RequestBody UrlData urlData ) {
+	public ResponseEntity<Void> saveRoleToUser(@RequestBody @Valid UrlData urlData ) {
 		if(iAccountService.addRoleToUser(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PostMapping(path ="/remove")
 	//@PostAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<Void> removeRoleToUser(@RequestBody UrlData urlData) {
+	public ResponseEntity<Void> removeRoleToUser(@RequestBody @Valid UrlData urlData) {
 		if(iAccountService.removeRoleUser(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/user/{id}")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -79,7 +81,7 @@ public class AccountRestController {
 		 if(user!=null) {
 			 return ResponseEntity.status(HttpStatus.OK).body(user);
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/role/{id}")
 	//@PostAuthorize("hasAuthority('ADMIN')")
@@ -88,7 +90,7 @@ public class AccountRestController {
 		if(role!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(role);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="user/{id}")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -96,7 +98,7 @@ public class AccountRestController {
 		if(iAccountService.deleteUser(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="/role/{id}")
 	//@PostAuthorize("hasAuthority('ADMIN')")
@@ -104,25 +106,25 @@ public class AccountRestController {
 		if(iAccountService.deleteRole(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		 }
-		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PutMapping (path ="/user")
 	//@PostAuthorize("hasAuthority('USER')")
-	public ResponseEntity<UserApp> userUpdate(@RequestBody UserApp user) {
+	public ResponseEntity<UserApp> userUpdate(@RequestBody @Valid UserApp user) {
 		UserApp userApp = iAccountService.updateUser(user);
 		if(userApp!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(userApp);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PutMapping (path ="/role")
 	//@PostAuthorize("hasAuthority('ADMIN')")
-	public ResponseEntity<UserRole> roleUpdate(@RequestBody UserRole role) {
+	public ResponseEntity<UserRole> roleUpdate(@RequestBody @Valid UserRole role) {
 		UserRole userRole = iAccountService.updateRole(role);
 		if(userRole!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(userRole);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.FOUND).build();
 	} 
 	@PostMapping(path ="/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
 	//@PostAuthorize("hasAuthority('USER')")
@@ -131,7 +133,7 @@ public class AccountRestController {
 		if(image!=null) {
 			return ResponseEntity.status(HttpStatus.OK).body(image);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping(path = "image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
 	//@PostAuthorize("hasAuthority('USER')")
@@ -148,16 +150,13 @@ public class AccountRestController {
 		if(RefreshToken.jwtRefreshToken( request, response)){
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping(path = "/profile")
 	//@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<UserApp> profile(Principal principal) {
 		UserApp user = iAccountService.loadUserByUsername(principal.getName());
-		if(user!=null) {
-			return ResponseEntity.status(HttpStatus.OK).body(user);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	@PostMapping(path ="verify")
 	//@PostAuthorize("hasAuthority('USER')")
@@ -194,6 +193,10 @@ public class AccountRestController {
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	}
+	@GetMapping(path = "/facebook")
+	public ResponseEntity<Principal> facebook(Principal principal) {
+		return ResponseEntity.status(HttpStatus.OK).body(principal);
 	}
 	
 }

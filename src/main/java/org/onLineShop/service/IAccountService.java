@@ -30,4 +30,7 @@ public interface IAccountService {
 	public List<UserRole> getAllRole();
 	public boolean deletePhotoIfExist(long id) throws IOException;
 	public UserApp verifyUsername(UrlData urlData);
+	public UserRole findRoleByRoleName(String roleName);
+	public void saveAndUpdateOauthUser(UserApp user);
+	public UserApp findUserByEmailAdress(String email);
 }

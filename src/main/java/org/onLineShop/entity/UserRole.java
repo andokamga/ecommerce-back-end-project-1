@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ import lombok.ToString;
 public class UserRole {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUserRole;
-	@Column(name = "role_name",unique = true, length =10)
+	@NotNull(message = "name role shouldn't be null")
+	@Column(name = "role_name",unique = true, length =10,nullable = false)
 	private String userRoleName;
 	@ManyToMany(fetch = FetchType.EAGER)
 	//@JoinTable(name = "userAppRole")
