@@ -1,5 +1,6 @@
 package org.onLineShop.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -30,11 +31,15 @@ public class Orde  {
 	private Date limitDate;
 	private double orderPrice;
 	private EnumStatus status;
+	private String name;
+	private String  email ;
+	private String address;
+	private String phoneNumber;
 	@OneToOne(mappedBy = "orde",cascade = CascadeType.REMOVE)
 	private  Payment payement;
 	@OneToMany(mappedBy = "orde",cascade = CascadeType.REMOVE)
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private Collection<ItemProduct> itemProducts;//=new ArrayList<>();
+	//@JsonProperty(access = Access.WRITE_ONLY)
+	private Collection<ItemProduct> itemProducts=new ArrayList<>();
 	@ManyToOne
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private UserApp userApp;

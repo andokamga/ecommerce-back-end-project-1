@@ -31,16 +31,18 @@ public class RefreshToken {
 				JWTVerifier JwtVerifier = JWT.require(algorithm).build();
 				DecodedJWT decodedJwt = JwtVerifier.verify(jwt);
 				String userName = decodedJwt.getSubject();
+				System.out.println(decodedJwt);
+				System.out.println(userName);
 				UserApp user = iAccountService.loadUserByUsername(userName);
 				String jwtaccessToken = JWT.create()
 						                   .withSubject(user.getUserName())
 						                   .withExpiresAt(new Date(System.currentTimeMillis()+JwtUtil.EXPIRE_ACCESS_TOKEN))
 						                   .withIssuer(request.getRequestURI().toString())
-						                   .withClaim("roles",user.getUserRoles().stream().map(ga->ga.getIdUserRole()).collect(Collectors.toList()))
+						                   .withClaim("roles",user.getUserRoles().stream().map(r->r.getUserRoleName()).collect(Collectors.toList()))
 						                   .sign(algorithm);
 				Map<String, String> idToken = new HashMap<>();
-				idToken.put("access-token", jwtaccessToken);
-				idToken.put("refresh-token", jwt);
+				idToken.put("accessToken", jwtaccessToken);
+				idToken.put("refreshToken", jwt);
 				response.setContentType("application/json");
 				new ObjectMapper().writeValue(response.getOutputStream(), idToken);
 				return true;

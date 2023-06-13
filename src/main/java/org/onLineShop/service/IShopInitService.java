@@ -9,7 +9,7 @@ public interface IShopInitService {
 	public void initUser();
 	public void initProduct();
 	public void initOrde();
-	public void initItemProduct();
+	//public void initItemProduct();
 	public void initPayment();
 	public void initShopSeller();
 }

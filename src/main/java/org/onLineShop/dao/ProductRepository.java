@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.web.bind.annotation.CrossOrigin;
+@CrossOrigin("*")
 @RepositoryRestResource
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product>findByShop(Shop shop,Pageable page);

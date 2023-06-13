@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,11 +31,13 @@ public class Product  {
 	private String productImage;
 	private double productPrice;
 	private boolean available;
-	@Min(value = 0,message = "le price must be positive")
+	//@Min(value = 0,message = "le price must be positive")
 	private double reductionPrince;
 	private int like;
 	private	int unLike;
-	@Min(value = 0,message = "le price must be positive")
+	@Transient 
+	private int quantity=1;
+	//@Min(value = 0,message = "le price must be positive")
 	private int productQuantity;
 	@ManyToOne
 	//@JsonProperty(access = Access.WRITE_ONLY)

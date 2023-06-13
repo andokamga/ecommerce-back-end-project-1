@@ -5,6 +5,7 @@ import org.onLineShop.service.from.InfoBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ public class BillRestController {
 	@Autowired
 	IBillService iBillService;
 	@GetMapping(path ="/{id}")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<InfoBill> printBill(@PathVariable(name = "id")long id ){
 		InfoBill info = iBillService.billOrde(id);
 		if(info!=null) {

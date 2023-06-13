@@ -1,5 +1,6 @@
 package org.onLineShop.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -186,16 +187,32 @@ public class ShopInitServiceImpl implements IShopInitService {
 		LocalDateTime startTime = LocalDateTime.now().plusHours(UtilDate.LIMIT_DATE);
 		Date limitDate = Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant());
 		  townRepository.findAll().forEach(town->{
-			  shopRepository.findAll().forEach(shop->{
-	              for(int i=0;i<(5+(int)(Math.random()*10));i++) {
+			  town.getShops().forEach(shop->{
+				  List<Product> product= (List<Product>) shop.getProducts();
+				  for(int i=0;i<(100+(int)(Math.random()*10));i++){
 	            	Orde orde = new Orde();
-	      			orde.setOrderDate(new Date());
+	            	LocalDate order = LocalDate.now().plusDays(i%25);
+	            	Date date = Date.from(order.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	      			orde.setOrderDate(date);
 	      			orde.setLimitDate(limitDate);
 	      			orde.setOrderPrice(1000+Math.random()*7000);
 	      			orde.setUserApp(userApp.get(new Random().nextInt(userApp.size())));
 	      			orde.setStatus(EnumStatus.NOPAID);
+	      			orde.setAddress("douala");
+	      			orde.setName("kamga");
+	      			orde.setPhoneNumber("693266410");
+	      			orde.setEmail("andokamga@gmail.com");
 	      			ordeRepository.save(orde); 
+	      			for(int y=0; y<(3+(int)(Math.random()*0)); y++) {
+	    				ItemProduct item = new ItemProduct();
+	    				item.setOrde(orde);
+	    				item.setProduct(product.get(new Random().nextInt(product.size())));
+	    				item.setQuatity((3+(int)Math.random()*3));
+	    				//orde.getItemProducts().add(item);
+	    				itemProductRepository.save(item);
+	    				}	
 				  }
+	              
 		  });
 		  
 			
@@ -204,20 +221,21 @@ public class ShopInitServiceImpl implements IShopInitService {
 		
 	}
 
-	@Override
+	/*@Override
 	public void initItemProduct() {
 		List<Product> product = productRepository.findAll();
 		ordeRepository.findAll().forEach(orde->{
-			for(int i=0; i<(3+(int)(Math.random()*3)); i++) {
+			for(int i=0; i<(3+(int)(Math.random()*0)); i++) {
 				ItemProduct item = new ItemProduct();
 				item.setOrde(orde);
 				item.setProduct(product.get(new Random().nextInt(product.size())));
 				item.setQuatity((3+(int)Math.random()*3));
+				//orde.getItemProducts().add(item);
 				itemProductRepository.save(item);
 				}	
 			});
 		
-	}
+	}*/
 
 	@Override
 	public void initPayment() {

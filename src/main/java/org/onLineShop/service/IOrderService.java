@@ -5,6 +5,7 @@ import org.onLineShop.service.from.OrderForme;
 import org.onLineShop.service.from.UrlData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public interface IOrderService {
 	public boolean deleteOrder(long id);

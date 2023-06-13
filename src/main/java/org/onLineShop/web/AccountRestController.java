@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +51,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping(path ="/role")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UserRole> saveRole(@RequestBody @Valid UserRole role) {
 		UserRole userRole = iAccountService.addRole(role);
 		if(userRole!=null) {
@@ -59,7 +60,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping(path ="/add")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> saveRoleToUser(@RequestBody @Valid UrlData urlData ) {
 		if(iAccountService.addRoleToUser(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -67,7 +68,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PostMapping(path ="/remove")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> removeRoleToUser(@RequestBody @Valid UrlData urlData) {
 		if(iAccountService.removeRoleUser(urlData)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -75,7 +76,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/user/{id}")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<UserApp> getOneUser(@PathVariable(name = "id")  int id ){
 		UserApp user = iAccountService.getOneUser(id);
 		 if(user!=null) {
@@ -84,7 +85,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping("/role/{id}")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UserRole> getOneRole(@PathVariable(name = "id")  int id ){
 		UserRole role = iAccountService.getOneRole(id) ; 
 		if(role!=null) {
@@ -93,7 +94,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="user/{id}")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<Void> delateuser(@PathVariable(name = "id") long id) throws IOException{
 		if(iAccountService.deleteUser(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -101,7 +102,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="/role/{id}")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> delateRole(@PathVariable(name = "id") long id) {
 		if(iAccountService.deleteRole(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -109,7 +110,7 @@ public class AccountRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PutMapping (path ="/user")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<UserApp> userUpdate(@RequestBody @Valid UserApp user) {
 		UserApp userApp = iAccountService.updateUser(user);
 		if(userApp!=null) {
@@ -118,7 +119,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PutMapping (path ="/role")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<UserRole> roleUpdate(@RequestBody @Valid UserRole role) {
 		UserRole userRole = iAccountService.updateRole(role);
 		if(userRole!=null) {
@@ -127,7 +128,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.FOUND).build();
 	} 
 	@PostMapping(path ="/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<byte[]> uploadImage(MultipartFile file, @PathVariable(name = "id") long id) throws Exception{
 		byte[] image = iAccountService.uploadPhoto(file, id);
 		if(image!=null) {
@@ -135,7 +136,7 @@ public class AccountRestController {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
-	@GetMapping(path = "image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+	@GetMapping(path = "/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
 	//@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<byte[]> image(@PathVariable(name = "id")long id) throws Exception {
 		byte[] image = iAccountService.getImage(id);
@@ -153,7 +154,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@GetMapping(path = "/profile")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<UserApp> profile(Principal principal) {
 		UserApp user = iAccountService.loadUserByUsername(principal.getName());
 		return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -167,8 +168,8 @@ public class AccountRestController {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
-	@GetMapping(path = "/users")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostMapping(path = "/users")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Page<UserApp>> getAlluser(@RequestBody UrlData UrlData){
 		PageRequest pageRequest = PageRequest.of( UrlData.getPage(),UrlData.getSize() , Sort.by(Direction.ASC ,"userName"));
 		Page<UserApp> users = iAccountService.getAlluser(pageRequest);
@@ -178,7 +179,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	@GetMapping(path = "/roles")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<UserRole>> getAllRole( ){
 		List<UserRole> Roles = iAccountService.getAllRole();
 		if(Roles!=null) {
@@ -187,7 +188,7 @@ public class AccountRestController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	@DeleteMapping(path ="/image/{id}")
-	//@PostAuthorize("hasAuthority('USER')")
+	@PostAuthorize("hasAuthority('USER')")
 	public ResponseEntity<Void> delateImage(@PathVariable(name = "id")long id) throws IOException {
 		if(iAccountService.deletePhotoIfExist(id)){
 			return ResponseEntity.status(HttpStatus.OK).build();

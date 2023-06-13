@@ -54,8 +54,10 @@ public class IProductServiceImpl implements IProductService {
 	public void deletePhotoIfExist(long id) throws IOException {
 		if(productRepository.findById(id).isPresent()) {
 			String filename = productRepository.findById(id).get().getProductImage();
-			Path filenamePath = Paths.get(uploadDirectory(),filename);
-			Files.deleteIfExists(filenamePath);
+			if(filename!=null) {
+				Path filenamePath = Paths.get(uploadDirectory(),filename);
+				Files.deleteIfExists(filenamePath);
+			}
 		}
 		
 	}

@@ -35,7 +35,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:4200/**")
+//@CrossOrigin("*")
 @OpenAPIDefinition
 @RequestMapping("/api/products")
 public class ProductRestController{
@@ -70,7 +71,7 @@ public class ProductRestController{
 		 return ResponseEntity.status(HttpStatus.OK).body(image);
 
 	 }
-	 @GetMapping(path ="/home",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @PostMapping(path ="/home",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 @Operation(summary = "to get this list we need to give the id shop")
 	 @ApiResponses(value = {
 		 @ApiResponse(responseCode = "200", description = "page of product present",content = {@Content(mediaType= "application/Json")}),
@@ -86,7 +87,7 @@ public class ProductRestController{
 		  }
 		  return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	 }
-	 @GetMapping(path ="/search",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @PostMapping(path ="/search",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 @Operation(summary = "to search the product give the wordkey and shop id")
 	 @ApiResponses(value = {
 		 @ApiResponse(responseCode = "200", description = "page of product present",content = {@Content(mediaType= "application/Json")}),
@@ -102,7 +103,7 @@ public class ProductRestController{
 		  }
 		  return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	 }
-	 @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @PostMapping(path ="/shop",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<Page<Product>> getListProduct(@RequestBody @Valid UrlData urlData ){
 		 PageRequest pageRequest = PageRequest.of( urlData.getPage(),urlData.getSize() , Sort.by(Direction.ASC ,"productName")); 
 		Page<Product> products= iProductService.listProduct(urlData,pageRequest);	
@@ -125,7 +126,7 @@ public class ProductRestController{
 		
 	 }
 	 @PostMapping(path ="/brand",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	 @PostAuthorize("hasAuthority('SELLER')")
+	 //@PostAuthorize("hasAuthority('SELLER')")
 	 public ResponseEntity<Brand> saveBrand(@RequestBody @Valid Brand brand) {
 		 Brand bran = iProductService.addBrand(brand);
 		 if(bran!=null) {
@@ -218,7 +219,7 @@ public class ProductRestController{
 		 }
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	 }
-	 @GetMapping (path ="/categoryProducts",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @PostMapping (path ="/categoryProducts",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<Page<Product>> categoryShopProduct(@RequestBody UrlData urlData){
 		 PageRequest pageShopProduct = PageRequest.of( urlData.getPage(),urlData.getSize() , Sort.by(Direction.ASC ,"productName"));
 		 Page<Product> product = iProductService.categoryShopProduct(urlData, pageShopProduct);
@@ -228,7 +229,7 @@ public class ProductRestController{
 		 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	 }
 		
-	 @GetMapping (path ="/brandProducts",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	 @PostMapping (path ="/brandProducts",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<Page<Product>> brandShopProduct(@RequestBody UrlData urlData){
 		 PageRequest pageShopProduct = PageRequest.of( urlData.getPage(),urlData.getSize() , Sort.by(Direction.ASC ,"productName"));
 		 Page<Product> product = iProductService.brandShopProduct(urlData, pageShopProduct);

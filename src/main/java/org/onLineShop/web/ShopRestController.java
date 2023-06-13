@@ -10,6 +10,7 @@ import org.onLineShop.service.from.UrlData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class ShopRestController {
 	@Autowired
 	public IShopService iShopService;
 	@PostMapping("/town")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Town> saveTown(@RequestBody Town town ) {
 		Town t = iShopService.addTown(town);	
 		 if(t!=null) {
@@ -36,7 +37,7 @@ public class ShopRestController {
 		 return ResponseEntity.status(HttpStatus.FOUND).build();
 	}
 	@PostMapping
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Shop> saveShop(@RequestBody Shop shop ) {
 		Shop s = iShopService.addShop(shop);	
 		return ResponseEntity.status(HttpStatus.CREATED).body(s);
@@ -52,7 +53,7 @@ public class ShopRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@DeleteMapping (path ="/{id}")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> delateShop(@PathVariable(name = "id") long id) {
 		if(iShopService.delateShop(id)) {
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -60,14 +61,14 @@ public class ShopRestController {
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	@PutMapping
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Shop> shopUpdate(@RequestBody Shop shop) {
 		Shop s = iShopService.updateShop(shop);
 		return ResponseEntity.status(HttpStatus.OK).body(s);
 	
 	}
 	@PutMapping (path ="/town")
-	//@PostAuthorize("hasAuthority('ADMIN')")
+	@PostAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Town> townUpdate(@RequestBody Town town) {
 		Town t = iShopService.updateTown(town);
 		return ResponseEntity.status(HttpStatus.OK).body(t);

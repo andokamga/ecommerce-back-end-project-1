@@ -53,6 +53,6 @@ public class UserApp {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Collection<Orde> ordes;
 	@ManyToMany(mappedBy = "userApps",fetch = FetchType.EAGER)
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	private Collection<UserRole> userRoles=new ArrayList<>();
 }

@@ -46,18 +46,19 @@ public class SecurityConfig {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		//http.formLogin();
 		http.headers().frameOptions().disable();
+		http.cors().and().csrf().disable();
 		http.authorizeHttpRequests().anyRequest().permitAll();
 		//http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/saveUser/**","/saveRole/**").hasAuthority("ADMIN");
-		//http.authorizeHttpRequests().requestMatchers("/facebook/**","/login/**","/oauth2/**","/h2-console/**"/*,"/refreshToken/**","/accounts/user/**"*/).permitAll();
+		//http.authorizeHttpRequests().requestMatchers("/api/**","/facebook/**","/login/**","/oauth2/**","/h2-console/**","/ecommerce-docs/**","/swagger-ui/**","/refreshToken**").permitAll();
 		//http.authorizeHttpRequests().anyRequest().authenticated();
         //http.formLogin().permitAll().loginPage("/loginPage.html");
         //http.logout().permitAll();
-		http.oauth2Login()
+		/*http.oauth2Login()
 		     //.loginPage("/login")
 		     .userInfoEndpoint()
 		     .userService(oauth2UserService)
 		     .and()
-		     .successHandler(oauth2LonginSuccessHandler);
+		     .successHandler(oauth2LonginSuccessHandler);*/
 		http.addFilter(new JwtAuthentificationFilter(Authentication()));
 		http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();	
