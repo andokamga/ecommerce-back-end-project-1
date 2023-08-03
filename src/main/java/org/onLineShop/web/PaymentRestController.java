@@ -2,6 +2,7 @@ package org.onLineShop.web;
 
 import org.onLineShop.service.IPaymentService;
 import org.onLineShop.service.from.Body;
+import org.onLineShop.service.from.StatusPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,10 @@ public class PaymentRestController {
 	public IPaymentService IPaymentService;
 	@PostMapping(path ="/MTN/{id}")
 	//@PostAuthorize("hasAuthority('USER')")
-	public ResponseEntity<Void> paymentMTN(@RequestBody Body body, @PathVariable(name = "id") long id) throws Exception{
-		String status = IPaymentService.RequestMTNPayment(body, id);
+	public ResponseEntity<StatusPayment> paymentMTN(@RequestBody Body body, @PathVariable(name = "id") long id) throws Exception{
+		StatusPayment status = IPaymentService.RequestMTNPayment(body, id);
 		if(status!=null) {
-			return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.status(HttpStatus.OK).body(status);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 	}

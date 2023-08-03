@@ -89,7 +89,7 @@ public class IOrderServiceImpl implements IOrderService {
 		orde.setPhoneNumber(orderForme.getClient().getPhoneNumber());
 		orde.setEmail(orderForme.getClient().getEmail());
 		orde.setUserApp(userAppRepository.findById(orderForme.getIdUser()).get());
-		ordeRepository.save(orde);
+		//ordeRepository.save(orde);
 		orderForme.getOrdeLine().forEach(ordeLine->{
 			ItemProduct itemProduct = new ItemProduct();
 			Product product = productRepository.findById(ordeLine.getId()).get();
@@ -101,7 +101,8 @@ public class IOrderServiceImpl implements IOrderService {
 		});
 	
 		timer.schedule(task, start);
-		return orde;
+		//ordeRepository.findAll();
+		return ordeRepository.save(orde);
 	}
 	@Override
 	public Page<Orde> listOrdeUser(Long id,PageRequest PageRequest) {

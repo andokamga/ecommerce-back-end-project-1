@@ -6,6 +6,7 @@ import org.onLineShop.entity.ItemProduct;
 import org.onLineShop.entity.Orde;
 import org.onLineShop.entity.Shop;
 import org.onLineShop.service.IAccountService;
+import org.onLineShop.service.ICourierService;
 import org.onLineShop.service.IOrderService;
 import org.onLineShop.service.IProductService;
 import org.onLineShop.service.IShopInitService;
@@ -33,6 +34,8 @@ public class OnLineShopApplication implements CommandLineRunner {
 	private IOrderService iOrderService;
 	@Autowired
 	private IProductService iProductService;
+	@Autowired
+	private ICourierService iCourierService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(OnLineShopApplication.class, args);
@@ -55,6 +58,8 @@ public class OnLineShopApplication implements CommandLineRunner {
 		//iShopInitService.initItemProduct();
 		iShopInitService.initPayment();
 		iShopInitService.initShopSeller();
+		//iCourierService.sendHtmlEmail();
+		iCourierService.sendSMS("+23793266410", "en fin reusir la vie");
 		
 	}
 	@Bean

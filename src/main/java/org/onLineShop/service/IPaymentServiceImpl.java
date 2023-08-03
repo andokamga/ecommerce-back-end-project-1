@@ -84,7 +84,7 @@ public class IPaymentServiceImpl implements IPaymentService{
 		return null;
     
 	}
-	public String RequestMTNPayment(Body bodyClient,long id) throws Exception {
+	public StatusPayment RequestMTNPayment(Body bodyClient,long id) throws Exception {
 		String ReferenceId = generatorsUuidVersion4().toString();
 		String AcessToken = getToken();
 		if(AcessToken!=null) {
@@ -114,7 +114,7 @@ public class IPaymentServiceImpl implements IPaymentService{
 						payment.setPaymentRef(status.getFinancialTransactionId());
 						ordeRepository.save(orde);
 						paymentRepository.save(payment);
-						return status.getStatus();
+						return status;
 					}
 					
 				}
